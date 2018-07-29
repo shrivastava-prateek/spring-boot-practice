@@ -1,14 +1,20 @@
 package com.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Person {
 
 	private String name;
 	private String mobileNumber;
 	private String profession;
+	//@JsonIgnore
     private Address address;
 
 
 	
+	public Person() {
+	}
+
 	public Person(String name, String mobileNumber, String profession, Address address) {
 		super();
 		this.name = name;

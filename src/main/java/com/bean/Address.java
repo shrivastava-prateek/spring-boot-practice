@@ -7,6 +7,11 @@ public class Address {
 	String country;
 	
 	
+	public Address() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Address(String city, String postalCode, String country) {
 		super();
 		this.city = city;

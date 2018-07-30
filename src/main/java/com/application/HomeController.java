@@ -1,17 +1,24 @@
 package com.application;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bean.Address;
 import com.bean.Person;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 @RestController
 @RequestMapping("/home-controller")
@@ -211,16 +216,44 @@ public class HomeController {
     
     
     @PostMapping("/uploadFile")
-    public void receiveFile(@RequestParam(value="file") MultipartFile file ) throws IOException {
-      
+    public ResponseEntity receiveFile(@RequestParam(value="file") MultipartFile[] files, @RequestParam(value="file") MultipartFile file, 
+    		@RequestParam(value = "queryParam") String queryParam, 
+    		@RequestParam(value="formParam") String formParam) throws IOException {
+    
+    	
+    	// All the form data with key as a 'file' will be available inside the array, hence can be used for uploading multiple files
+    for(MultipartFile f: files) {
+    	  logger.info("multipart array: "+f.getOriginalFilename());
+      }
        logger.info(file.getOriginalFilename());
+       logger.info("Query Param: "+ queryParam + ", Form Param: "+ formParam);
        
        logger.info(file.getSize()+"");
        
        logger.info(file.getBytes().length+"");
+       
+       return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getOriginalFilename()+"\"").body(file.getBytes());
         
     }
  
+    
+    @GetMapping("/downloadFile")
+    public ResponseEntity returnFile() throws FileNotFoundException {
+    
+    	File file = new File("abc.jpg");
+    	
+       logger.info(file.exists()+"");
+       logger.info(file.getAbsolutePath()+"");
+       logger.info(file.getPath()+"");
+       
+       InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+     //  Resource resource = new UrlResource("file://"+file.getPath());
+       
+       logger.info(resource.exists()+"");
+       
+       return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getName()+"\"").body(resource);
+        
+    }
     
     
 }

@@ -1,4 +1,5 @@
 package com.application;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bean.Address;
 import com.bean.Person;
@@ -174,6 +179,47 @@ public class HomeController {
         
     }
     
+    @GetMapping("/returnCustomStatusAndHeaders")
+    public ResponseEntity sendCustomStatusAndHeaders() {
+    	  Address addr1 = new Address("Nagpur", "440022", "India");
+          
+          Person p1 = new Person("Prateek Shrivastava","12234567","Project Engineer",addr1);
+		//return ResponseEntity.ok(p1);
+          
+          //return ResponseEntity.accepted().body(p1);
+          //return ResponseEntity.badRequest().body(p1);
+          //return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+          HttpHeaders headers = new HttpHeaders();
+          headers.add("SampleHeader1", "value1");
+          headers.add("SampleHeader2", "value2");
+          headers.add("SampleHeader3", "value3");
+          headers.add("SampleHeader4", "value4");
+          headers.add("SampleHeader1", "value5");
+          //return ResponseEntity.noContent().header("CustomHeader", "value").build();
+          //return ResponseEntity.noContent().headers(headers).build();
+          
+          //Creating Custom JSON
+          Map<String,String> map = new HashMap<String,String>();
+          map.put("JsonKey1", "value1");
+          map.put("JsonKey2", "value2");
+          map.put("JsonKey3", "value3");
+          map.put("JsonKey4", "value4");
+          map.put("JsonKey5", "value5");
+          //return ResponseEntity.status(HttpStatus.ACCEPTED).headers(headers).body(map);
+          return ResponseEntity.ok().headers(headers).body(map);
+    }
+    
+    
+    @PostMapping("/uploadFile")
+    public void receiveFile(@RequestParam(value="file") MultipartFile file ) throws IOException {
+      
+       logger.info(file.getOriginalFilename());
+       
+       logger.info(file.getSize()+"");
+       
+       logger.info(file.getBytes().length+"");
+        
+    }
  
     
     

@@ -251,7 +251,7 @@ public class HomeController {
        
        logger.info(resource.exists()+"");
        
-       return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getName()+"\"").body(resource);
+       return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getName()+"\"").body(resource);
         
     }
     

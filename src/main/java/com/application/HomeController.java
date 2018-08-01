@@ -3,12 +3,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -247,12 +251,52 @@ public class HomeController {
        logger.info(file.getPath()+"");
        
        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+      // FileInputStream fis = new FileInputStream(file);
+     //  InputStreamReader is = new InputStreamReader(new FileInputStream(file));
      //  Resource resource = new UrlResource("file://"+file.getPath());
        
        logger.info(resource.exists()+"");
        
        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getName()+"\"").body(resource);
         
+    }
+    
+    @GetMapping("/headers")
+    public ResponseEntity returnHeaders(@RequestHeader HttpHeaders headers) {
+   
+       logger.info(headers.toString());
+       logger.info(headers.keySet().toString());
+       logger.info(headers.size()+"");
+       
+       return ResponseEntity.ok(headers);
+        
+    }
+    
+    
+    @GetMapping("/httpRequest")
+    public void receiveRequestObject(HttpServletRequest request) {
+   
+    	// /spring-boot-practice
+       logger.info(request.getContextPath());
+       // /home-controller/httpRequest
+       logger.info(request.getServletPath());
+       //The below gives the whole URL (http://localhost:8082/spring-boot-practice/home-controller/httpRequest)
+       logger.info(request.getRequestURL().toString());
+       // /spring-boot-practice/home-controller/httpRequest
+       logger.info(request.getRequestURI());
+       // /spring-boot-practice
+       logger.info(request.getServletContext().getContextPath());
+       
+       // false
+       logger.info(request.isSecure()+"");
+       // 49F4447CEFE29C59703CB19C48F8D953
+       logger.info(request.getSession().getId());
+       // null
+       logger.info(request.getQueryString());
+       // http
+       logger.info(request.getScheme());
+       
+       
     }
     
     

@@ -9,7 +9,7 @@ public class Address {
 	
 	public Address() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Address(String city, String postalCode, String country) {

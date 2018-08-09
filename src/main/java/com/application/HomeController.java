@@ -3,9 +3,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
+//import java.io.InputStreamReader;
+//import java.net.MalformedURLException;
+//import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+//import org.springframework.core.io.Resource;
+//import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -134,9 +134,9 @@ public class HomeController {
     @GetMapping("/getParameters/{name}")
     public void receiveParameters(@RequestParam(value = "firstParam", defaultValue="sample Vaue") String param,@PathVariable(value="name") String name) {
     	logger.info("Received Request Param: "+param + ", Path Param: "+name);
-        Address addr1 = new Address("Nagpur", "440022", "India");
+        //Address addr1 = new Address("Nagpur", "440022", "India");
        
-        Person p1 = new Person("Prateek Shrivastava","12234567","Project Engineer",addr1);
+        //Person p1 = new Person("Prateek Shrivastava","12234567","Project Engineer",addr1);
       
     }
     
